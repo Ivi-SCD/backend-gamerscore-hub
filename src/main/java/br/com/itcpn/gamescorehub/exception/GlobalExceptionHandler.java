@@ -36,4 +36,16 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(status).body(errorResponse);
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException (IllegalStateException ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ErrorResponseSpecificCause errorResponse = new ErrorResponseSpecificCause(
+                status.value(),
+                LocalDateTime.now(),
+                ex.getMessage(),
+                ex.getLocalizedMessage()
+        );
+        return ResponseEntity.status(status).body(errorResponse);
+    }
 }
