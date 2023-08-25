@@ -1,39 +1,35 @@
-package br.com.itcpn.gamescorehub.model;
+package br.com.itcpn.gamescorehub.dto;
 
-import jakarta.persistence.*;
+import br.com.itcpn.gamescorehub.config.validations.ValidImageURL;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "tb_jogos")
-public class Jogo {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_jogos")
+public class JogoDTO {
     private Long id;
-
-    @Column(length = 100, nullable = false)
+    @Size(min = 5, max = 100)
+    @NotBlank(message = "O Nome do jogo não pode ser vazio")
     private String nome;
-
-    @Column(length = 5000, nullable = false)
+    @NotBlank(message = "A descrição do jogo não pode ser vazia")
     private String descricao;
-
-    @Temporal(TemporalType.DATE)
+    @NotNull(message = "A data de lancamento deve ser inserida")
     private LocalDate lancamento;
-
+    @Pattern(regexp = "^(0|10|12|14|16|18)$", message = "A classificação deve ser um número entre  [0, 10, 12, 14, 16, 18]")
+    @NotBlank(message = "A classificação não pode ser vazia")
     private String classificacao;
-    @Column(name = "capa")
+    @ValidImageURL
+    @NotNull(message = "A URL da capa não pode ser vazia")
     private String capaURL;
-    @Column(name = "nota_critica")
+    @DecimalMin(value = "0", message = "A nota de critica deve ser um número entre 0 e 100")
+    @DecimalMax(value = "100", message = "A nota de critica deve ser um número entre 0 e 100")
     private Integer notaCritica;
+    @NotNull(message = "O nome do desenvolvedor não pode ser vazio")
     private String desenvolvedor;
 
-    public Jogo() {
+    public JogoDTO() {
     }
 
-    public Jogo(Long id, String nome, String descricao, LocalDate lancamento, String classificacao, String capaURL, Integer notaCritica, String desenvolvedor) {
-        this.id = id;
+    public JogoDTO(String nome, String descricao, LocalDate lancamento, String classificacao, String capaURL, Integer notaCritica, String desenvolvedor) {
         this.nome = nome;
         this.descricao = descricao;
         this.lancamento = lancamento;
@@ -45,10 +41,6 @@ public class Jogo {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNome() {
