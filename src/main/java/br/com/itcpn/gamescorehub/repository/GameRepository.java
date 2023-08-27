@@ -1,6 +1,6 @@
 package br.com.itcpn.gamescorehub.repository;
 
-import br.com.itcpn.gamescorehub.model.Game;
+import br.com.itcpn.gamescorehub.domain.game.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

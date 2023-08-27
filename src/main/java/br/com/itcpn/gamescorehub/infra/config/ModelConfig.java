@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.config;
+package br.com.itcpn.gamescorehub.infra.config;
 
 
 import org.modelmapper.ModelMapper;

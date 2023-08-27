@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.config.validations;
+package br.com.itcpn.gamescorehub.domain.caserules;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
