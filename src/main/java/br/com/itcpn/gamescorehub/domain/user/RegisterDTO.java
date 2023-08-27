@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class UserDTO {
+public class RegisterDTO {
     @Email
     private String email;
     @Pattern(
@@ -22,4 +24,7 @@ public class UserDTO {
     private String password;
     @Size(min = 5, max = 50)
     private String nickname;
+    private final Boolean active = true;
+    private final UserRole role = UserRole.USER;
+    private final LocalDateTime created_at = LocalDateTime.now();
 }
