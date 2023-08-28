@@ -1,11 +1,11 @@
 package br.com.itcpn.gamescorehub.controller;
 
-import br.com.itcpn.gamescorehub.domain.user.AuthenticatorDTO;
-import br.com.itcpn.gamescorehub.domain.user.LoginResponseDTO;
-import br.com.itcpn.gamescorehub.domain.user.RegisterDTO;
 import br.com.itcpn.gamescorehub.domain.user.User;
-import br.com.itcpn.gamescorehub.infra.security.TokenService;
+import br.com.itcpn.gamescorehub.domain.user.dto.AuthenticatorDTO;
+import br.com.itcpn.gamescorehub.domain.user.dto.LoginResponseDTO;
+import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
 import br.com.itcpn.gamescorehub.service.AuthorizationService;
+import br.com.itcpn.gamescorehub.service.TokenService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

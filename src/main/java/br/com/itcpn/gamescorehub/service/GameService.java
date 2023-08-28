@@ -21,21 +21,56 @@ public class GameService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public GameDTO getGameById(Long id) {
+    public GameDTO findGameById(Long id) {
         Game game = gameRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return modelMapper.map(game, GameDTO.class);
     }
 
-    public List<GameDTO> getAllGames() {
+    public List<GameDTO> findAllGames() {
         List<Game> games = gameRepository.findAll();
         return games.stream()
                 .map(game -> modelMapper.map(game, GameDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> getAllGames(Pageable pagination) {
+    public List<GameDTO> findAllGames(Pageable pagination) {
         return gameRepository.findAll(pagination)
                 .map(game -> modelMapper.map(game, GameDTO.class))
+                .toList();
+    }
+
+    public List<GameDTO> findGamesLikeName (String name) {
+        return gameRepository.findAllLikeName(name)
+                .stream()
+                .map(game -> modelMapper.map(game, GameDTO.class))
+                .toList();
+    }
+
+    public List<GameDTO> findAllGamesByYear(int year) {
+        return gameRepository.findGamesByYear(year)
+                .stream()
+                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .toList();
+    }
+
+    public List<GameDTO> findAllGamesByAge(String ageClassification) {
+        return gameRepository.findGamesByAge(ageClassification)
+                .stream()
+                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .toList();
+    }
+
+    public List<GameDTO> findAllGamesOrderByCriticsNote() {
+        return gameRepository.findAllGamesOrderByCriticsNote()
+                .stream()
+                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .toList();
+    }
+
+    public List<GameDTO> findAllGamesOrderByYear() {
+        return gameRepository.findAllGamesOrderByYear()
+                .stream()
+                .map((game) -> modelMapper.map(game, GameDTO.class))
                 .toList();
     }
 
@@ -50,23 +85,5 @@ public class GameService {
         Game game = modelMapper.map(gameDTO, Game.class);
         game = gameRepository.save(game);
         return modelMapper.map(game, GameForSaveDTO.class);
-    }
-
-    public void deleteGame(Long id) {
-        gameRepository.deleteById(id);
-    }
-
-    public List<GameDTO> findGamesByname (String name) {
-        return gameRepository.findAllLikeName(name)
-                .stream()
-                .map(game -> modelMapper.map(game, GameDTO.class))
-                .toList();
-    }
-
-    public List<GameDTO> getAllGamesByYear(int year) {
-        return gameRepository.findGamesByYear(year)
-                .stream()
-                .map((game) -> modelMapper.map(game, GameDTO.class))
-                .toList();
     }
 }

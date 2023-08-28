@@ -1,5 +1,7 @@
 package br.com.itcpn.gamescorehub.domain.user;
 
+import br.com.itcpn.gamescorehub.domain.user.enums.ProfilePic;
+import br.com.itcpn.gamescorehub.domain.user.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "tb_users")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -31,9 +33,12 @@ public class User implements UserDetails {
     private String nickname;
     private Boolean active;
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime created_at;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @Enumerated(EnumType.STRING)
+    private ProfilePic profilePic;
 
     public User(String email, String password, String nickname) {
         this.email = email;
@@ -41,7 +46,8 @@ public class User implements UserDetails {
         this.nickname = nickname;
         this.active = true;
         this.role = UserRole.USER;
-        this.created_at = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
+        this.profilePic = ProfilePic.GREEN;
     }
 
     @Override

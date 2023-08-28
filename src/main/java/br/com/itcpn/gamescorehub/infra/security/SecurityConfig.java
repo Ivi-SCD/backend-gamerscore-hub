@@ -22,23 +22,7 @@ public class SecurityConfig {
 
     @Autowired
     private JWTSecurityFilter JWTSecurityFilter;
-
-//    @Bean
-//    @Order(1)
-//    SecurityFilterChain oAuth2SecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//        return httpSecurity
-//                .authorizeHttpRequests(auth -> {
-//                        auth
-//                            .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-//                            .requestMatchers(HttpMethod.POST,"/auth/register").permitAll();
-//                    auth.anyRequest().authenticated();
-//                })
-//                .oauth2Login(Customizer.withDefaults())
-//                .build();
-//    }
-
     @Bean
-//    @Order(2)
     SecurityFilterChain jwtSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)

@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.infra.security;
+package br.com.itcpn.gamescorehub.service;
 
 import br.com.itcpn.gamescorehub.domain.user.User;
 import com.auth0.jwt.JWT;
@@ -40,7 +40,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch(JWTVerificationException e) {
-            return "";
+            throw new RuntimeException("Invalid or expired Token JWT");
         }
     }
 

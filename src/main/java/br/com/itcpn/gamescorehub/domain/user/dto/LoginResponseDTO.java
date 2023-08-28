@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.domain.user;
+package br.com.itcpn.gamescorehub.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

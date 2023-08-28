@@ -1,5 +1,7 @@
-package br.com.itcpn.gamescorehub.domain.user;
+package br.com.itcpn.gamescorehub.domain.user.dto;
 
+import br.com.itcpn.gamescorehub.domain.user.enums.ProfilePic;
+import br.com.itcpn.gamescorehub.domain.user.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -26,5 +28,6 @@ public class RegisterDTO {
     private String nickname;
     private final Boolean active = true;
     private final UserRole role = UserRole.USER;
-    private final LocalDateTime created_at = LocalDateTime.now();
+    private final LocalDateTime createdAt = LocalDateTime.now();
+    private final ProfilePic profilePic = ProfilePic.GREEN;
 }

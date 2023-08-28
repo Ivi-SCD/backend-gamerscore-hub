@@ -25,17 +25,12 @@ public class GameController {
 
     @GetMapping
     public List<GameDTO> listAllGames() {
-        return gameService.getAllGames();
+        return gameService.findAllGames();
     }
 
     @GetMapping("year/{year}")
     public List<GameDTO> listAllGamesByYear(@PathVariable int year) {
-        return gameService.getAllGamesByYear(year);
-    }
-
-    @GetMapping("{id}")
-    public GameDTO getGameById(@PathVariable Long id) {
-        return gameService.getGameById(id);
+        return gameService.findAllGamesByYear(year);
     }
 
     @GetMapping("{size}")
@@ -45,12 +40,32 @@ public class GameController {
 
         pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
 
-        return gameService.getAllGames(pageable);
+        return gameService.findAllGames(pageable);
     }
 
     @GetMapping("sort/{name}")
-    public List<GameDTO> findGamesByName(@PathVariable String name) {
-        return gameService.findGamesByname(name);
+    public List<GameDTO> listAllGamesByName(@PathVariable String name) {
+        return gameService.findGamesLikeName(name);
+    }
+
+    @GetMapping("classification/{age}")
+    public List<GameDTO> listAllGamesByAgeClassification(@PathVariable String age) {
+        return gameService.findAllGamesByAge(age);
+    }
+
+    @GetMapping("critics")
+    public List<GameDTO> listAllGamesByCriticsNotes() {
+        return gameService.findAllGamesOrderByCriticsNote();
+    }
+
+    @GetMapping("release")
+    public List<GameDTO> listAllGamesByYear() {
+        return gameService.findAllGamesOrderByYear();
+    }
+
+    @GetMapping("{id}")
+    public GameDTO findGameById(@PathVariable Long id) {
+        return gameService.findGameById(id);
     }
 
     @PostMapping
@@ -68,10 +83,5 @@ public class GameController {
         return ResponseEntity.ok(gameDTO);
     }
 
-    @DeleteMapping("{id}")
-    @Transactional
-    public ResponseEntity<Object> deleteGame(@PathVariable Long id) {
-        gameService.deleteGame(id);
-        return ResponseEntity.noContent().build();
-    }
+
 }

@@ -12,4 +12,10 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAllLikeName(String name);
     @Query("SELECT g FROM Game g WHERE YEAR(g.releaseYear) = :year")
     List<Game> findGamesByYear(@Param("year") int year);
+    @Query("SELECT g FROM Game g WHERE g.ageClassification = :ageClassification")
+    List<Game> findGamesByAge(@Param("ageClassification") String ageClassification);
+    @Query("SELECT g FROM Game g ORDER BY g.criticsNote DESC")
+    List<Game> findAllGamesOrderByCriticsNote();
+    @Query("SELECT g FROM Game g ORDER BY g.releaseYear DESC")
+    List<Game> findAllGamesOrderByYear();
 }

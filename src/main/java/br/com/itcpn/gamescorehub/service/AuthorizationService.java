@@ -1,9 +1,8 @@
 package br.com.itcpn.gamescorehub.service;
 
-import br.com.itcpn.gamescorehub.domain.user.RegisterDTO;
 import br.com.itcpn.gamescorehub.domain.user.User;
+import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
 import br.com.itcpn.gamescorehub.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,11 +25,6 @@ public class AuthorizationService implements UserDetailsService {
         return userRepository.findByEmail(username);
     }
 
-    public RegisterDTO getUserById(Long id) {
-        User user = findUser(id);
-        return modelMapper.map(user, RegisterDTO.class);
-    }
-
     public User saveUser(RegisterDTO registerDTO) {
         User user = modelMapper.map(registerDTO, User.class);
         return userRepository.save(user);
@@ -50,15 +44,6 @@ public class AuthorizationService implements UserDetailsService {
             return modelMapper.map(user, RegisterDTO.class);
         }
         return null;
-    }
-
-    public void deleteUser(Long id) {
-        User user = findUser(id);
-        user.setActive(false);
-    }
-
-    private User findUser(Long id) {
-        return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public HttpStatus validateUser(RegisterDTO registerDTO) {

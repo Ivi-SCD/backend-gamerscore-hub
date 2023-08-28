@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.domain.user;
+package br.com.itcpn.gamescorehub.domain.user.enums;
 
 import lombok.Getter;
 
