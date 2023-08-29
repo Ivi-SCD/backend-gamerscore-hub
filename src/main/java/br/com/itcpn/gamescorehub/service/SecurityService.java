@@ -9,10 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorizationService implements UserDetailsService {
+public class SecurityService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -25,12 +26,7 @@ public class AuthorizationService implements UserDetailsService {
         return userRepository.findByEmail(username);
     }
 
-    public User saveUser(RegisterDTO registerDTO) {
-        User user = modelMapper.map(registerDTO, User.class);
-        return userRepository.save(user);
-    }
-
-    public RegisterDTO findByEmail(String email) {
+    private RegisterDTO findByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if(user != null) {
             return modelMapper.map(user, RegisterDTO.class);
@@ -38,7 +34,7 @@ public class AuthorizationService implements UserDetailsService {
         return null;
     }
 
-    public RegisterDTO findByNickname(String nickname) {
+    private RegisterDTO findByNickname(String nickname) {
         User user = userRepository.findByNickname(nickname);
         if(user != null) {
             return modelMapper.map(user, RegisterDTO.class);
@@ -51,5 +47,9 @@ public class AuthorizationService implements UserDetailsService {
             return HttpStatus.BAD_REQUEST;
         }
         return HttpStatus.OK;
+    }
+
+    public String ecryptPassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
     }
 }

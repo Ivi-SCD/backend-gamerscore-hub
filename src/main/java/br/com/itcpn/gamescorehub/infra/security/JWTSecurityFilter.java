@@ -1,6 +1,6 @@
 package br.com.itcpn.gamescorehub.infra.security;
 
-import br.com.itcpn.gamescorehub.service.AuthorizationService;
+import br.com.itcpn.gamescorehub.service.SecurityService;
 import br.com.itcpn.gamescorehub.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,13 +22,13 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private AuthorizationService authorizationService;
+    private SecurityService securityService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if(token != null) {
             var email = tokenService.validateToken(token);
-            UserDetails user = authorizationService.loadUserByUsername(email);
+            UserDetails user = securityService.loadUserByUsername(email);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

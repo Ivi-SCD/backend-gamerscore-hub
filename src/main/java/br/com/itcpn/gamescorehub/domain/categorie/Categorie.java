@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.domain.platforms;
+package br.com.itcpn.gamescorehub.domain.categorie;
 
 import br.com.itcpn.gamescorehub.domain.game.Game;
 import jakarta.persistence.*;
@@ -7,21 +7,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_platform")
+@Table(name = "tb_categorie")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Platform {
+public class Categorie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_platform")
     private Long id;
     private String name;
-    @ManyToMany(mappedBy = "platformsList")
-    private List<Game> gameList = new ArrayList<>();
+    @ManyToMany(mappedBy = "categoriesList")
+    private Set<Game> gameList = new HashSet<>();
 }

@@ -1,11 +1,12 @@
 package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.user.User;
-import br.com.itcpn.gamescorehub.domain.user.dto.AuthenticatorDTO;
+import br.com.itcpn.gamescorehub.domain.user.dto.LoginDTO;
 import br.com.itcpn.gamescorehub.domain.user.dto.LoginResponseDTO;
 import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
-import br.com.itcpn.gamescorehub.service.AuthorizationService;
+import br.com.itcpn.gamescorehub.service.SecurityService;
 import br.com.itcpn.gamescorehub.service.TokenService;
+import br.com.itcpn.gamescorehub.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +29,19 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private AuthorizationService authorizationService;
+    private SecurityService securityService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthenticatorDTO authenticatorDTO) {
+    public ResponseEntity<Object> login(@RequestBody @Valid LoginDTO loginDTO) {
 
-        var userEmailPass = new UsernamePasswordAuthenticationToken(authenticatorDTO.email(), authenticatorDTO.password());
+        var userEmailPass = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
         var auth = authenticationManager.authenticate(userEmailPass);
-
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
@@ -49,16 +51,12 @@ public class AuthController {
     @Transactional
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDTO) {
 
-        HttpStatus status = authorizationService.validateUser(registerDTO);
+        HttpStatus status = securityService.validateUser(registerDTO);
 
         if(status == HttpStatus.OK) {
-            String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.getPassword());
-
-            registerDTO.setPassword(encryptedPassword);
-            User user = authorizationService.saveUser(registerDTO);
-
+            registerDTO.setPassword(securityService.ecryptPassword(registerDTO.getPassword()));
+            User user = userService.saveUser(registerDTO);
             return ResponseEntity.created(URI.create("/user/" + user.getId())).build();
-
         }
         return ResponseEntity.badRequest().build();
 

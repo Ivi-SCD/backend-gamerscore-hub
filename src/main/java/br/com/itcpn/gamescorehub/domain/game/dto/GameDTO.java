@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.domain.game.dto;
 
 import br.com.itcpn.gamescorehub.domain.caserules.ValidImageURL;
+import br.com.itcpn.gamescorehub.domain.platform.Platform;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +36,6 @@ public class GameDTO {
     private Integer criticsNote;
     @NotNull(message = "The developer of the game cannot be empty")
     private String developer;
+    @NotEmpty(message = "The game must have at least one platform")
+    private Set<Platform> platformsList = new HashSet<>();
 }
