@@ -31,6 +31,16 @@ public class SecurityConfig {
                             auth
                                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/games/**").permitAll()
+                                    .requestMatchers(HttpMethod.POST, "/games/**").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.PUT, "/games/**").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.GET, "/platforms").permitAll()
+                                    .requestMatchers(HttpMethod.POST, "/platforms").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.GET, "/categories").permitAll()
+                                    .requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.PUT, "/users").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
                                     .anyRequest().authenticated()
 
                 )
