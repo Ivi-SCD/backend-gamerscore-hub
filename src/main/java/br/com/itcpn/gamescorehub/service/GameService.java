@@ -86,4 +86,8 @@ public class GameService {
         game = gameRepository.save(game);
         return modelMapper.map(game, GameForSaveDTO.class);
     }
+
+    public Game findByName(String gameName) {
+        return gameRepository.findByName(gameName);
+    }
 }

@@ -16,14 +16,14 @@ import lombok.Setter;
 @Setter
 public class PublicNote {
 
-    @EmbeddedId
-    private PublicNoteId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_public_note")
+    private Long id;
     @ManyToOne
-    @MapsId("idUser")
     @JoinColumn(name = "id_user")
     private User user;
     @ManyToOne
-    @MapsId("idGame")
     @JoinColumn(name = "id_game")
     private Game game;
     private Integer animation;

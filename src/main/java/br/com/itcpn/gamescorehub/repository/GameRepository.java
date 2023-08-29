@@ -18,4 +18,5 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAllGamesOrderByCriticsNote();
     @Query("SELECT g FROM Game g ORDER BY g.releaseYear DESC")
     List<Game> findAllGamesOrderByYear();
+    Game findByName(String gameName);
 }

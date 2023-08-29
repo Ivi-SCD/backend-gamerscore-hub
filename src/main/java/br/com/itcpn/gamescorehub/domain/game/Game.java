@@ -2,6 +2,7 @@ package br.com.itcpn.gamescorehub.domain.game;
 
 import br.com.itcpn.gamescorehub.domain.categorie.Categorie;
 import br.com.itcpn.gamescorehub.domain.platform.Platform;
+import br.com.itcpn.gamescorehub.domain.publicnote.PublicNote;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_game")
+@Table(name = "tb_games")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -38,15 +39,17 @@ public class Game {
     private Integer criticsNote;
     private String developer;
     @ManyToMany
-    @JoinTable(name = "tb_game_platform",
+    @JoinTable(name = "tb_games_platforms",
     joinColumns = @JoinColumn(name = "id_game"),
     inverseJoinColumns = @JoinColumn(name = "id_platform"), uniqueConstraints = {@UniqueConstraint(columnNames = {"id_game", "id_platform"})})
     private Set <Platform> platformsList = new HashSet<>();
     @ManyToMany
-    @JoinTable(name = "tb_game_categorie",
+    @JoinTable(name = "tb_games_categories",
     joinColumns = @JoinColumn(name = "id_game"),
     inverseJoinColumns = @JoinColumn(name = "id_categorie"), uniqueConstraints = {@UniqueConstraint(columnNames = {"id_game", "id_categorie"})})
     private Set <Categorie> categoriesList = new HashSet<>();
+    @OneToMany(mappedBy = "game")
+    private Set <PublicNote> publicNotesList = new HashSet<>();
 
     public void addPlatform(Platform platform) {
         this.platformsList.add(platform);

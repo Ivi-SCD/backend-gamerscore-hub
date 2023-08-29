@@ -1,5 +1,6 @@
 package br.com.itcpn.gamescorehub.domain.user;
 
+import br.com.itcpn.gamescorehub.domain.publicnote.PublicNote;
 import br.com.itcpn.gamescorehub.domain.user.enums.ProfilePic;
 import br.com.itcpn.gamescorehub.domain.user.enums.UserRole;
 import jakarta.persistence.*;
@@ -10,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_users")
@@ -39,6 +42,8 @@ public class User implements UserDetails {
     private UserRole role;
     @Enumerated(EnumType.STRING)
     private ProfilePic profilePic;
+    @OneToMany(mappedBy = "user")
+    private Set<PublicNote> publicNotesList = new HashSet<>();
 
     public User(String email, String password, String nickname) {
         this.email = email;

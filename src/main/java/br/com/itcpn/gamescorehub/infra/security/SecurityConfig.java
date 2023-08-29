@@ -34,6 +34,7 @@ public class SecurityConfig {
                                     .requestMatchers(HttpMethod.GET, "/games/**").permitAll()
                                     .requestMatchers(HttpMethod.POST, "/games/**").hasRole("ADMIN")
                                     .requestMatchers(HttpMethod.PUT, "/games/**").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.PUT, "/publicnotes").hasRole("ADMIN")
                                     .requestMatchers(HttpMethod.GET, "/platforms").permitAll()
                                     .requestMatchers(HttpMethod.POST, "/platforms").hasRole("ADMIN")
                                     .requestMatchers(HttpMethod.GET, "/categories").permitAll()

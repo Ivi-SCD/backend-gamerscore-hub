@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.domain.game.dto;
 
 import br.com.itcpn.gamescorehub.domain.caserules.ValidImageURL;
+import br.com.itcpn.gamescorehub.domain.categorie.Categorie;
 import br.com.itcpn.gamescorehub.domain.platform.Platform;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,6 @@ public class GameDTO {
     private String developer;
     @NotEmpty(message = "The game must have at least one platform")
     private Set<Platform> platformsList = new HashSet<>();
+    @NotEmpty(message = "The game must have at least one categorie")
+    private Set<Categorie> categoriesList = new HashSet<>();
 }

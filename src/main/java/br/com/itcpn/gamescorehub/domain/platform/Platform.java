@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.domain.platform;
 
 import br.com.itcpn.gamescorehub.domain.game.Game;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_platform")
+@Table(name = "tb_platforms")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,5 +24,6 @@ public class Platform {
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "platformsList")
+    @JsonIgnore
     private List<Game> gameList = new ArrayList<>();
 }

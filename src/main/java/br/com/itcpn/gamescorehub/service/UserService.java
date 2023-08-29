@@ -30,6 +30,9 @@ public class UserService {
         return modelMapper.map(user, UserResponseDTO.class);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
     public void deleteUserById(Long id) {
         User user = findUserById(id);
         user.setActive(false);
@@ -45,5 +48,4 @@ public class UserService {
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
-
 }
