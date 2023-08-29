@@ -25,8 +25,6 @@ public class PublicNoteController {
     private UserService userService;
     @Autowired
     private PublicNoteService publicNoteService;
-
-
     @PutMapping
     @Transactional
     public ResponseEntity<Object> updatePublicNote(@RequestBody @Valid PublicNoteDTO publicNoteDTO, HttpServletRequest request) {
@@ -37,7 +35,6 @@ public class PublicNoteController {
 
             String email = tokenService.validateToken(token);
             User user = userService.findByEmail(email);
-
             publicNoteService.saveNote(publicNoteDTO, user);
             return ResponseEntity.ok().body("Public note added to user");
         }

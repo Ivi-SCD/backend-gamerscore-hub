@@ -28,5 +28,15 @@ public class PublicNoteService {
         publicNote.setUser(user);
 
         publicNoteRepository.save(publicNote);
+
+        double note = game.getPublicNotesList()
+                .stream().mapToDouble(x -> (double) (x.getNarrative()
+                        + x.getSoundtrack()
+                        + x.getGameplay()
+                        + x.getAnimation()) /4).average().orElse(0.0);
+
+        game.setPublicNote(String.valueOf(note));
+
     }
+
 }

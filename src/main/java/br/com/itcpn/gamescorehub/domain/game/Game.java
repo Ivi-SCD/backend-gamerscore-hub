@@ -50,6 +50,8 @@ public class Game {
     private Set <Categorie> categoriesList = new HashSet<>();
     @OneToMany(mappedBy = "game")
     private Set <PublicNote> publicNotesList = new HashSet<>();
+    @Column(name = "public_note", length = 3)
+    private String publicNote;
 
     public void addPlatform(Platform platform) {
         this.platformsList.add(platform);
