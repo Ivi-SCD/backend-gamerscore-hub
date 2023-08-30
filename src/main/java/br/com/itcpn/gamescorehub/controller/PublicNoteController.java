@@ -5,6 +5,7 @@ import br.com.itcpn.gamescorehub.domain.user.User;
 import br.com.itcpn.gamescorehub.service.PublicNoteService;
 import br.com.itcpn.gamescorehub.service.TokenService;
 import br.com.itcpn.gamescorehub.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -27,6 +28,7 @@ public class PublicNoteController {
     private PublicNoteService publicNoteService;
     @PutMapping
     @Transactional
+    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<Object> updatePublicNote(@RequestBody @Valid PublicNoteDTO publicNoteDTO, HttpServletRequest request) {
         String token = request.getHeader("Authorization");
 

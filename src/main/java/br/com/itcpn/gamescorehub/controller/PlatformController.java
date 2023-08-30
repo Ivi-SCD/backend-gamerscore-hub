@@ -3,6 +3,7 @@ package br.com.itcpn.gamescorehub.controller;
 import br.com.itcpn.gamescorehub.domain.platform.dto.PlatformDTO;
 import br.com.itcpn.gamescorehub.domain.platform.dto.PlatformResponseDTO;
 import br.com.itcpn.gamescorehub.service.PlaftormService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class PlatformController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<PlatformDTO> savePlatform(@RequestBody @Valid PlatformDTO platformDTO) {
         platformDTO = platformService.savePlatform(platformDTO);
         return ResponseEntity.created(URI.create("/platforms")).body(platformDTO);

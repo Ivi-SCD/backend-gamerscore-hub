@@ -18,7 +18,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class GameDTO {
-    private Long id;
     @Size(min = 5, max = 100)
     @NotBlank(message = "The name of the game cannot be empty")
     private String name;

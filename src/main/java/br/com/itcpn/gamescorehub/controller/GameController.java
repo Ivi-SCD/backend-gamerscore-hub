@@ -4,6 +4,7 @@ import br.com.itcpn.gamescorehub.domain.game.dto.GameDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameForSaveDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameResponseDTO;
 import br.com.itcpn.gamescorehub.service.GameService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,7 @@ public class GameController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<GameForSaveDTO> saveGame(@RequestBody @Valid GameDTO GameDTO) {
         GameForSaveDTO game = gameService.saveGame(GameDTO);
 
@@ -79,6 +81,7 @@ public class GameController {
 
     @PutMapping("{id}")
     @Transactional
+    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<GameDTO> updateGame(@PathVariable Long id, @RequestBody @Valid GameDTO gameDTO) {
         gameDTO = gameService.updateGame(id, gameDTO);
         return ResponseEntity.ok(gameDTO);
