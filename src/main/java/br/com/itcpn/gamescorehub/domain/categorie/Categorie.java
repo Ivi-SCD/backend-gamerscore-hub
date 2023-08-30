@@ -23,6 +23,7 @@ public class Categorie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categorie")
     private Long id;
+    @Column(unique = true, length = 50, nullable = false)
     private String name;
     @ManyToMany(mappedBy = "categoriesList")
     @JsonIgnore

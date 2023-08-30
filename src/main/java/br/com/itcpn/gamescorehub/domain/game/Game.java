@@ -3,6 +3,7 @@ package br.com.itcpn.gamescorehub.domain.game;
 import br.com.itcpn.gamescorehub.domain.categorie.Categorie;
 import br.com.itcpn.gamescorehub.domain.platform.Platform;
 import br.com.itcpn.gamescorehub.domain.publicnote.PublicNote;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,23 +50,8 @@ public class Game {
     inverseJoinColumns = @JoinColumn(name = "id_categorie"), uniqueConstraints = {@UniqueConstraint(columnNames = {"id_game", "id_categorie"})})
     private Set <Categorie> categoriesList = new HashSet<>();
     @OneToMany(mappedBy = "game")
+    @JsonIgnore
     private Set <PublicNote> publicNotesList = new HashSet<>();
-    @Column(name = "public_note", length = 3)
-    private String publicNote;
-
-    public void addPlatform(Platform platform) {
-        this.platformsList.add(platform);
-    }
-
-    public void removePlatform(Platform platform) {
-        this.platformsList.remove(platform);
-    }
-
-    public void addCategorie(Categorie categorie) {
-        this.categoriesList.add(categorie);
-    }
-
-    public void removeCategorie(Categorie categorie) {
-        this.categoriesList.remove(categorie);
-    }
+    @Column(name = "public_note")
+    private Double publicNote;
 }

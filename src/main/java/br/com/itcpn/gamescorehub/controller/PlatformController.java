@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.platform.dto.PlatformDTO;
+import br.com.itcpn.gamescorehub.domain.platform.dto.PlatformResponseDTO;
 import br.com.itcpn.gamescorehub.service.PlaftormService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class PlatformController {
     private PlaftormService platformService;
 
     @GetMapping
-    public List<PlatformDTO> listAllPlatforms() {
+    public List<PlatformResponseDTO> listAllPlatforms() {
         return platformService.findAllPlatforms();
     }
 

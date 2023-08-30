@@ -2,6 +2,7 @@ package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.game.dto.GameDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameForSaveDTO;
+import br.com.itcpn.gamescorehub.domain.game.dto.GameResponseDTO;
 import br.com.itcpn.gamescorehub.service.GameService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -24,17 +25,17 @@ public class GameController {
 
 
     @GetMapping
-    public List<GameDTO> listAllGames() {
+    public List<GameResponseDTO> listAllGames() {
         return gameService.findAllGames();
     }
 
     @GetMapping("year/{year}")
-    public List<GameDTO> listAllGamesByYear(@PathVariable int year) {
+    public List<GameResponseDTO> listAllGamesByYear(@PathVariable int year) {
         return gameService.findAllGamesByYear(year);
     }
 
     @GetMapping("{size}")
-    public List<GameDTO> listAllGames(
+    public List<GameResponseDTO> listAllGames(
             @PageableDefault(size = 20) Pageable pageable,
             @PathVariable int size) {
 
@@ -44,27 +45,27 @@ public class GameController {
     }
 
     @GetMapping("sort/{name}")
-    public List<GameDTO> listAllGamesByName(@PathVariable String name) {
+    public List<GameResponseDTO> listAllGamesByName(@PathVariable String name) {
         return gameService.findGamesLikeName(name);
     }
 
     @GetMapping("classification/{age}")
-    public List<GameDTO> listAllGamesByAgeClassification(@PathVariable String age) {
+    public List<GameResponseDTO> listAllGamesByAgeClassification(@PathVariable String age) {
         return gameService.findAllGamesByAge(age);
     }
 
     @GetMapping("critics")
-    public List<GameDTO> listAllGamesByCriticsNotes() {
+    public List<GameResponseDTO> listAllGamesByCriticsNotes() {
         return gameService.findAllGamesOrderByCriticsNote();
     }
 
     @GetMapping("release")
-    public List<GameDTO> listAllGamesByYear() {
+    public List<GameResponseDTO> listAllGamesByYear() {
         return gameService.findAllGamesOrderByYear();
     }
 
     @GetMapping("{id}")
-    public GameDTO findGameById(@PathVariable Long id) {
+    public GameResponseDTO findGameById(@PathVariable Long id) {
         return gameService.findGameById(id);
     }
 

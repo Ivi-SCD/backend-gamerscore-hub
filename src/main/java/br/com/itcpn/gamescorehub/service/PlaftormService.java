@@ -2,6 +2,7 @@ package br.com.itcpn.gamescorehub.service;
 
 import br.com.itcpn.gamescorehub.domain.platform.Platform;
 import br.com.itcpn.gamescorehub.domain.platform.dto.PlatformDTO;
+import br.com.itcpn.gamescorehub.domain.platform.dto.PlatformResponseDTO;
 import br.com.itcpn.gamescorehub.repository.PlatformRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,10 @@ public class PlaftormService {
 
     @Autowired
     private ModelMapper modelMapper;
-    public List<PlatformDTO> findAllPlatforms() {
+    public List<PlatformResponseDTO> findAllPlatforms() {
         return platformRepository.findAll()
                 .stream()
-                .map((platform) -> modelMapper.map(platform, PlatformDTO.class))
+                .map((platform) -> modelMapper.map(platform, PlatformResponseDTO.class))
                 .toList();
     }
 

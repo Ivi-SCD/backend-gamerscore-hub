@@ -1,6 +1,5 @@
-package br.com.itcpn.gamescorehub.domain.platform.dto;
+package br.com.itcpn.gamescorehub.domain.game.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PlatformDTO {
-    @NotBlank
+public class GameSimplifiedDTO {
     private String name;
+    private String description;
+    private String developer;
+    private Double publicNote;
 }

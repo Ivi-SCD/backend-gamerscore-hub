@@ -22,6 +22,7 @@ public class Platform {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_platform")
     private Long id;
+    @Column(unique = true, length = 50, nullable = false)
     private String name;
     @ManyToMany(mappedBy = "platformsList")
     @JsonIgnore

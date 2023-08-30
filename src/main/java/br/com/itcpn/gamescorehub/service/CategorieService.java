@@ -2,6 +2,7 @@ package br.com.itcpn.gamescorehub.service;
 
 import br.com.itcpn.gamescorehub.domain.categorie.Categorie;
 import br.com.itcpn.gamescorehub.domain.categorie.dto.CategorieDTO;
+import br.com.itcpn.gamescorehub.domain.categorie.dto.CategorieResponseDTO;
 import br.com.itcpn.gamescorehub.repository.CategorieRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ public class CategorieService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<CategorieDTO> findAllCategories() {
+    public List<CategorieResponseDTO> findAllCategories() {
         return categorieRepository.findAll()
                 .stream()
-                .map(categorie -> modelMapper.map(categorie, CategorieDTO.class))
+                .map(categorie -> modelMapper.map(categorie, CategorieResponseDTO.class))
                 .toList();
     }
 

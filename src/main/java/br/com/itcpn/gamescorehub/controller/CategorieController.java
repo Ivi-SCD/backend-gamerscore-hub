@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.categorie.dto.CategorieDTO;
+import br.com.itcpn.gamescorehub.domain.categorie.dto.CategorieResponseDTO;
 import br.com.itcpn.gamescorehub.service.CategorieService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class CategorieController {
     private CategorieService categorieService;
 
     @GetMapping()
-    public List<CategorieDTO> listAllCategories() {
+    public List<CategorieResponseDTO> listAllCategories() {
         return categorieService.findAllCategories();
     }
 

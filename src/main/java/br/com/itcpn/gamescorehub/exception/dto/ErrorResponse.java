@@ -1,4 +1,4 @@
-package br.com.itcpn.gamescorehub.exception;
+package br.com.itcpn.gamescorehub.exception.dto;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.service;
 
 import br.com.itcpn.gamescorehub.domain.user.User;
+import br.com.itcpn.gamescorehub.exception.token.TokenErrorException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -27,7 +28,7 @@ public class TokenService {
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new RuntimeException("Error while generating token", e);
+            throw new TokenErrorException("Error while generating token");
         }
     }
 
@@ -40,7 +41,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch(JWTVerificationException e) {
-            throw new RuntimeException("Invalid or expired Token JWT");
+            throw new TokenErrorException("Invalid or expired Token JWT");
         }
     }
 

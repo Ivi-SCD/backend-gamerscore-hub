@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_public_notes")
+@Table(name = "tb_public_notes", uniqueConstraints = @UniqueConstraint(columnNames = {"id_user", "id_game"}))
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

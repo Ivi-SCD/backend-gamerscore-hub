@@ -3,6 +3,7 @@ package br.com.itcpn.gamescorehub.service;
 import br.com.itcpn.gamescorehub.domain.game.Game;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameForSaveDTO;
+import br.com.itcpn.gamescorehub.domain.game.dto.GameResponseDTO;
 import br.com.itcpn.gamescorehub.repository.GameRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -21,56 +22,56 @@ public class GameService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public GameDTO findGameById(Long id) {
+    public GameResponseDTO findGameById(Long id) {
         Game game = gameRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return modelMapper.map(game, GameDTO.class);
+        return modelMapper.map(game, GameResponseDTO.class);
     }
 
-    public List<GameDTO> findAllGames() {
+    public List<GameResponseDTO> findAllGames() {
         List<Game> games = gameRepository.findAll();
         return games.stream()
-                .map(game -> modelMapper.map(game, GameDTO.class))
+                .map(game -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> findAllGames(Pageable pagination) {
+    public List<GameResponseDTO> findAllGames(Pageable pagination) {
         return gameRepository.findAll(pagination)
-                .map(game -> modelMapper.map(game, GameDTO.class))
+                .map(game -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> findGamesLikeName (String name) {
+    public List<GameResponseDTO> findGamesLikeName (String name) {
         return gameRepository.findAllLikeName(name)
                 .stream()
-                .map(game -> modelMapper.map(game, GameDTO.class))
+                .map(game -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> findAllGamesByYear(int year) {
+    public List<GameResponseDTO> findAllGamesByYear(int year) {
         return gameRepository.findGamesByYear(year)
                 .stream()
-                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .map((game) -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> findAllGamesByAge(String ageClassification) {
+    public List<GameResponseDTO> findAllGamesByAge(String ageClassification) {
         return gameRepository.findGamesByAge(ageClassification)
                 .stream()
-                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .map((game) -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> findAllGamesOrderByCriticsNote() {
+    public List<GameResponseDTO> findAllGamesOrderByCriticsNote() {
         return gameRepository.findAllGamesOrderByCriticsNote()
                 .stream()
-                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .map((game) -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
-    public List<GameDTO> findAllGamesOrderByYear() {
+    public List<GameResponseDTO> findAllGamesOrderByYear() {
         return gameRepository.findAllGamesOrderByYear()
                 .stream()
-                .map((game) -> modelMapper.map(game, GameDTO.class))
+                .map((game) -> modelMapper.map(game, GameResponseDTO.class))
                 .toList();
     }
 
@@ -89,5 +90,13 @@ public class GameService {
 
     public Game findByName(String gameName) {
         return gameRepository.findByName(gameName);
+    }
+
+    public Double calculateNote(Game game) {
+        return game.getPublicNotesList()
+                .stream().mapToDouble(x -> (double) (x.getNarrative()
+                        + x.getSoundtrack()
+                        + x.getGameplay()
+                        + x.getAnimation()) /4).average().orElse(0.0);
     }
 }
