@@ -1,6 +1,7 @@
 package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.user.dto.UserResponseDTO;
+import br.com.itcpn.gamescorehub.openapi.UserControllerOpenAPI;
 import br.com.itcpn.gamescorehub.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements UserControllerOpenAPI {
 
     @Autowired
     private UserService userService;
@@ -21,7 +22,6 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<Object> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
@@ -29,7 +29,6 @@ public class UserController {
 
     @PutMapping("{id}")
     @Transactional
-    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<Object> updateUserById(@PathVariable Long id, @RequestBody UserResponseDTO user) {
         userService.updateUser(id, user);
         return ResponseEntity.ok().build();

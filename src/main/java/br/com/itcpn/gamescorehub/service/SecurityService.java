@@ -2,10 +2,10 @@ package br.com.itcpn.gamescorehub.service;
 
 import br.com.itcpn.gamescorehub.domain.user.User;
 import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
+import br.com.itcpn.gamescorehub.exception.user.UserWithEmailOrNicknameAlreadyExistsException;
 import br.com.itcpn.gamescorehub.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,11 +42,10 @@ public class SecurityService implements UserDetailsService {
         return null;
     }
 
-    public HttpStatus validateUser(RegisterDTO registerDTO) {
+    public void validateUser(RegisterDTO registerDTO) {
         if(findByEmail(registerDTO.getEmail()) != null || findByNickname(registerDTO.getNickname()) != null) {
-            return HttpStatus.BAD_REQUEST;
+            throw new UserWithEmailOrNicknameAlreadyExistsException("Email or nickname already registered");
         }
-        return HttpStatus.OK;
     }
 
     public String ecryptPassword(String password) {

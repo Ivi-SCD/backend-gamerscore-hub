@@ -6,9 +6,11 @@ import br.com.itcpn.gamescorehub.exception.dto.ErrorResponseSpecificCause;
 import br.com.itcpn.gamescorehub.exception.token.TokenErrorGenerationException;
 import br.com.itcpn.gamescorehub.exception.token.TokenErrorInvalidOrExpiredException;
 import br.com.itcpn.gamescorehub.exception.user.UserAlreadyHasPublicNoteOnGameException;
+import br.com.itcpn.gamescorehub.exception.user.UserWithEmailOrNicknameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -108,6 +110,28 @@ public class GlobalExceptionHandler {
                 status.value(),
                 LocalDateTime.now(),
                 ex.getMessage()
+        );
+        return ResponseEntity.status(status).body(errorResponse);
+    }
+
+    @ExceptionHandler(UserWithEmailOrNicknameAlreadyExistsException.class)
+    public ResponseEntity<Object> handleUserWithEmailOrNicknameAlreadyExistsException(UserWithEmailOrNicknameAlreadyExistsException ex) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ErrorResponseSimpleCause errorResponse = new ErrorResponseSimpleCause(
+                status.value(),
+                LocalDateTime.now(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(status).body(errorResponse);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentialsException() {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponseSimpleCause errorResponse = new ErrorResponseSimpleCause(
+                status.value(),
+                LocalDateTime.now(),
+                "Inexistent user or invalid password"
         );
         return ResponseEntity.status(status).body(errorResponse);
     }

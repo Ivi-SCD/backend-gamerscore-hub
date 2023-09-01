@@ -4,13 +4,14 @@ import br.com.itcpn.gamescorehub.domain.user.User;
 import br.com.itcpn.gamescorehub.domain.user.dto.LoginDTO;
 import br.com.itcpn.gamescorehub.domain.user.dto.LoginResponseDTO;
 import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
+
+import br.com.itcpn.gamescorehub.openapi.AuthControllerOpenAPI;
 import br.com.itcpn.gamescorehub.service.SecurityService;
 import br.com.itcpn.gamescorehub.service.TokenService;
 import br.com.itcpn.gamescorehub.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthControllerOpenAPI {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -51,14 +52,10 @@ public class AuthController {
     @Transactional
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDTO) {
 
-        HttpStatus status = securityService.validateUser(registerDTO);
-
-        if(status == HttpStatus.OK) {
-            registerDTO.setPassword(securityService.ecryptPassword(registerDTO.getPassword()));
-            User user = userService.saveUser(registerDTO);
-            return ResponseEntity.created(URI.create("/user/" + user.getId())).build();
-        }
-        return ResponseEntity.badRequest().build();
+        securityService.validateUser(registerDTO);
+        registerDTO.setPassword(securityService.ecryptPassword(registerDTO.getPassword()));
+        User user = userService.saveUser(registerDTO);
+        return ResponseEntity.created(URI.create("/user/" + user.getId())).build();
 
     }
 }
