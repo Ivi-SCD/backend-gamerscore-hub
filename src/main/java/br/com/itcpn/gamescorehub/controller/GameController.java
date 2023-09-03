@@ -2,9 +2,10 @@ package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.game.dto.GameDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameForSaveDTO;
+import br.com.itcpn.gamescorehub.domain.game.dto.GameForUpdateDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameResponseDTO;
+import br.com.itcpn.gamescorehub.openapi.GameControllerOpenAPI;
 import br.com.itcpn.gamescorehub.service.GameService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/games")
-public class GameController {
+public class GameController implements GameControllerOpenAPI {
 
     @Autowired
     private GameService gameService;
@@ -35,7 +36,7 @@ public class GameController {
         return gameService.findAllGamesByYear(year);
     }
 
-    @GetMapping("{size}")
+    @GetMapping("pagination/{size}")
     public List<GameResponseDTO> listAllGames(
             @PageableDefault(size = 20) Pageable pageable,
             @PathVariable int size) {
@@ -45,7 +46,7 @@ public class GameController {
         return gameService.findAllGames(pageable);
     }
 
-    @GetMapping("sort/{name}")
+    @GetMapping("name/{name}")
     public List<GameResponseDTO> listAllGamesByName(@PathVariable String name) {
         return gameService.findGamesLikeName(name);
     }
@@ -55,24 +56,27 @@ public class GameController {
         return gameService.findAllGamesByAge(age);
     }
 
-    @GetMapping("critics")
+    @GetMapping("order/publicnote")
+    public List<GameResponseDTO> listAllGamesByPublicNotes() {
+        return gameService.findAllGamesOrderByPublicNote();
+    }
+    @GetMapping("order/critics")
     public List<GameResponseDTO> listAllGamesByCriticsNotes() {
         return gameService.findAllGamesOrderByCriticsNote();
     }
 
-    @GetMapping("release")
+    @GetMapping("order/release")
     public List<GameResponseDTO> listAllGamesByYear() {
         return gameService.findAllGamesOrderByYear();
     }
 
     @GetMapping("{id}")
     public GameResponseDTO findGameById(@PathVariable Long id) {
-        return gameService.findGameById(id);
+        return gameService.getGameById(id);
     }
 
     @PostMapping
     @Transactional
-    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<GameForSaveDTO> saveGame(@RequestBody @Valid GameDTO GameDTO) {
         GameForSaveDTO game = gameService.saveGame(GameDTO);
 
@@ -81,11 +85,9 @@ public class GameController {
 
     @PutMapping("{id}")
     @Transactional
-    @SecurityRequirement(name="bearer-key")
-    public ResponseEntity<GameDTO> updateGame(@PathVariable Long id, @RequestBody @Valid GameDTO gameDTO) {
-        gameDTO = gameService.updateGame(id, gameDTO);
-        return ResponseEntity.ok(gameDTO);
+    public ResponseEntity<GameResponseDTO> updateGame(@PathVariable Long id, @RequestBody GameForUpdateDTO gameDTO) throws IllegalAccessException {
+        GameResponseDTO gameUpdated = gameService.updateGame(id, gameDTO);
+        return ResponseEntity.ok(gameUpdated);
     }
-
 
 }

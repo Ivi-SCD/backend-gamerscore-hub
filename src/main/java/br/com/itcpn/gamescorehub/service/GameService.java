@@ -3,8 +3,10 @@ package br.com.itcpn.gamescorehub.service;
 import br.com.itcpn.gamescorehub.domain.game.Game;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameForSaveDTO;
+import br.com.itcpn.gamescorehub.domain.game.dto.GameForUpdateDTO;
 import br.com.itcpn.gamescorehub.domain.game.dto.GameResponseDTO;
 import br.com.itcpn.gamescorehub.repository.GameRepository;
+import br.com.itcpn.gamescorehub.util.NonNullFieldsReflection;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,8 @@ public class GameService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public GameResponseDTO findGameById(Long id) {
-        Game game = gameRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public GameResponseDTO getGameById(Long id) {
+        Game game = findGameById(id);
         return modelMapper.map(game, GameResponseDTO.class);
     }
 
@@ -75,11 +77,11 @@ public class GameService {
                 .toList();
     }
 
-    public GameDTO updateGame(Long id, GameDTO gameDTO) {
-        Game game = modelMapper.map(gameDTO, Game.class);
-        game.setId(id);
-        game = gameRepository.save(game);
-        return modelMapper.map(game, GameDTO.class);
+    public GameResponseDTO updateGame(Long id, GameForUpdateDTO gameDTO) throws IllegalAccessException {
+        Game gameToUpdate = findGameById(id);
+        NonNullFieldsReflection.setNonNullFields(gameDTO, gameToUpdate);
+
+        return modelMapper.map(gameToUpdate, GameResponseDTO.class);
     }
 
     public GameForSaveDTO saveGame(GameDTO gameDTO) {
@@ -88,8 +90,15 @@ public class GameService {
         return modelMapper.map(game, GameForSaveDTO.class);
     }
 
+    private Game findGameById(Long id) {
+        return gameRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
     public Game findByName(String gameName) {
-        return gameRepository.findByName(gameName);
+        Game game = gameRepository.findByName(gameName);
+        if(game == null)
+            throw new EntityNotFoundException("Game not found");
+        return game;
     }
 
     public Double calculateNote(Game game) {
@@ -98,5 +107,12 @@ public class GameService {
                         + x.getSoundtrack()
                         + x.getGameplay()
                         + x.getAnimation()) /4).average().orElse(0.0);
+    }
+
+    public List<GameResponseDTO> findAllGamesOrderByPublicNote() {
+        return gameRepository.findAllGamesOrderByPublicNote()
+                .stream()
+                .map((game) -> modelMapper.map(game, GameResponseDTO.class))
+                .toList();
     }
 }

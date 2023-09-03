@@ -7,6 +7,7 @@ import br.com.itcpn.gamescorehub.exception.token.TokenErrorGenerationException;
 import br.com.itcpn.gamescorehub.exception.token.TokenErrorInvalidOrExpiredException;
 import br.com.itcpn.gamescorehub.exception.user.UserAlreadyHasPublicNoteOnGameException;
 import br.com.itcpn.gamescorehub.exception.user.UserWithEmailOrNicknameAlreadyExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -132,6 +133,27 @@ public class GlobalExceptionHandler {
                 status.value(),
                 LocalDateTime.now(),
                 "Inexistent user or invalid password"
+        );
+        return ResponseEntity.status(status).body(errorResponse);
+    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ErrorResponseSimpleCause errorResponse = new ErrorResponseSimpleCause(
+                status.value(),
+                LocalDateTime.now(),
+                "Entity not found. Value: " + ex.getMessage()
+        );
+        return ResponseEntity.status(status).body(errorResponse);
+    }
+
+    @ExceptionHandler(UnexpectedError.class)
+    public ResponseEntity<Object> handleUnexpectedError(UnexpectedError ex) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponseSimpleCause errorResponse = new ErrorResponseSimpleCause(
+                status.value(),
+                LocalDateTime.now(),
+                "Unexpected error: " + ex.getMessage()
         );
         return ResponseEntity.status(status).body(errorResponse);
     }
