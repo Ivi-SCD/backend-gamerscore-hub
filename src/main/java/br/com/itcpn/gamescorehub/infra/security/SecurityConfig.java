@@ -29,9 +29,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                             auth
-                                    .requestMatchers(HttpMethod.GET, "/swagger-ui").permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api-docs/**").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/swagger-ui").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.GET, "/swagger-ui/**").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.GET, "/api-docs/**").hasRole("ADMIN")
                                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                                     .requestMatchers(HttpMethod.GET, "/games/**").permitAll()
