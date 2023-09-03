@@ -4,6 +4,7 @@ import br.com.itcpn.gamescorehub.domain.user.User;
 import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
 import br.com.itcpn.gamescorehub.domain.user.dto.UserResponseDTO;
 import br.com.itcpn.gamescorehub.repository.UserRepository;
+import br.com.itcpn.gamescorehub.util.NonNullFieldsReflection;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SecurityService securityService;
-
     @Autowired
     private ModelMapper modelMapper;
 
@@ -29,21 +27,18 @@ public class UserService {
         User user = findUserById(id);
         return modelMapper.map(user, UserResponseDTO.class);
     }
-
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
     public void deleteUserById(Long id) {
         User user = findUserById(id);
         user.setActive(false);
         userRepository.save(user);
     }
 
-    public void updateUser(Long id, UserResponseDTO user) {
+    public UserResponseDTO updateUser(Long id, UserResponseDTO user) throws IllegalAccessException {
         User userToUpdate = findUserById(id);
-        userToUpdate.setPassword(securityService.ecryptPassword(userToUpdate.getPassword()));
-        modelMapper.map(user, userToUpdate);
+        NonNullFieldsReflection.setNonNullFields(user, userToUpdate);
         userRepository.save(userToUpdate);
+
+        return modelMapper.map(userToUpdate, UserResponseDTO.class);
     }
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);

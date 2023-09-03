@@ -1,9 +1,11 @@
 package br.com.itcpn.gamescorehub.controller;
 
+import br.com.itcpn.gamescorehub.domain.user.User;
 import br.com.itcpn.gamescorehub.domain.user.dto.UserResponseDTO;
 import br.com.itcpn.gamescorehub.openapi.UserControllerOpenAPI;
+import br.com.itcpn.gamescorehub.service.SecurityService;
 import br.com.itcpn.gamescorehub.service.UserService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,11 @@ public class UserController implements UserControllerOpenAPI {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private SecurityService securityService;
 
     @GetMapping("{id}")
-    public UserResponseDTO findGameById(@PathVariable Long id) {
+    public UserResponseDTO findUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
@@ -27,10 +31,12 @@ public class UserController implements UserControllerOpenAPI {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{id}")
+    @PutMapping
     @Transactional
-    public ResponseEntity<Object> updateUserById(@PathVariable Long id, @RequestBody UserResponseDTO user) {
-        userService.updateUser(id, user);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Object> updateUserById(@RequestBody UserResponseDTO userDTO, HttpServletRequest request) throws IllegalAccessException {
+        String token = request.getHeader("Authorization");
+        User user = securityService.authorize(token);
+        UserResponseDTO userUpdated = userService.updateUser(user.getId(), userDTO);
+        return ResponseEntity.ok(userUpdated);
     }
 }

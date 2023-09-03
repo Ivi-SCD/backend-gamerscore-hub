@@ -2,6 +2,7 @@ package br.com.itcpn.gamescorehub.service;
 
 import br.com.itcpn.gamescorehub.domain.user.User;
 import br.com.itcpn.gamescorehub.domain.user.dto.RegisterDTO;
+import br.com.itcpn.gamescorehub.exception.UnexpectedError;
 import br.com.itcpn.gamescorehub.exception.user.UserWithEmailOrNicknameAlreadyExistsException;
 import br.com.itcpn.gamescorehub.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityService implements UserDetailsService {
 
+    @Autowired
+    private TokenService tokenService;
     @Autowired
     private UserRepository userRepository;
 
@@ -48,6 +51,15 @@ public class SecurityService implements UserDetailsService {
         }
     }
 
+    public User authorize(String token) {
+        if(token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+
+            String email = tokenService.validateToken(token);
+            return userRepository.findByEmail(email);
+        }
+        throw new UnexpectedError("Unexpected error");
+    }
     public String ecryptPassword(String password) {
         return new BCryptPasswordEncoder().encode(password);
     }
