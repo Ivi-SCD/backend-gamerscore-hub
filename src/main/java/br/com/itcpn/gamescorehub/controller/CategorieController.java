@@ -2,8 +2,8 @@ package br.com.itcpn.gamescorehub.controller;
 
 import br.com.itcpn.gamescorehub.domain.categorie.dto.CategorieDTO;
 import br.com.itcpn.gamescorehub.domain.categorie.dto.CategorieResponseDTO;
+import br.com.itcpn.gamescorehub.openapi.CategorieControllerOpenAPI;
 import br.com.itcpn.gamescorehub.service.CategorieService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +15,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
-public class CategorieController {
+public class CategorieController implements CategorieControllerOpenAPI {
 
     @Autowired
     private CategorieService categorieService;
 
-    @GetMapping()
+    @GetMapping
     public List<CategorieResponseDTO> listAllCategories() {
         return categorieService.findAllCategories();
     }
 
     @PostMapping
     @Transactional
-    @SecurityRequirement(name="bearer-key")
     public ResponseEntity<CategorieDTO> saveCategorie(@RequestBody @Valid CategorieDTO categorieDTO) {
         categorieDTO = categorieService.saveCategorie(categorieDTO);
         return ResponseEntity.created(URI.create("/categories")).body(categorieDTO);
