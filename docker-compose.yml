@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  database-gamerscore:
+    image: mysql:8.0
+    container_name: gsh-db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/data:/var/lib/mysql
