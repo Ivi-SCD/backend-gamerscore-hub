@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS tb_users(
+    id_user BIGINT AUTO_INCREMENT,
+    email VARCHAR(250) NOT NULL UNIQUE,
+    nickname VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    active BOOLEAN DEFAULT TRUE,
+    profile_pic ENUM('BLUE', 'GREEN', 'RED', 'WHITE', 'YELLOW'),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    role ENUM('DEVELOPER', 'USER') DEFAULT 'USER',
+    PRIMARY KEY (id_user)
+);

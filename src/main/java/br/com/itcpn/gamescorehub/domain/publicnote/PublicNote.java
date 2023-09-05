@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_public_notes", uniqueConstraints = @UniqueConstraint(columnNames = {"id_user", "id_game"}))
+@Table(name = "tb_public_notes")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -26,9 +26,13 @@ public class PublicNote {
     @ManyToOne
     @JoinColumn(name = "id_game")
     private Game game;
+    @Column(columnDefinition = "DECIMAL(3,0)")
     private Integer animation;
+    @Column(columnDefinition = "DECIMAL(3,0)")
     private Integer gameplay;
+    @Column(columnDefinition = "DECIMAL(3,0)")
     private Integer narrative;
+    @Column(columnDefinition = "DECIMAL(3,0)")
     private Integer soundtrack;
 
 }

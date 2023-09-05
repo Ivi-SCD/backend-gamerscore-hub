@@ -28,11 +28,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Long id;
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 250, nullable = false, unique = true)
     private String email;
-    @Column(length = 500, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 100, nullable = false, unique = true)
     private String nickname;
     private Boolean active;
     @Temporal(TemporalType.TIMESTAMP)

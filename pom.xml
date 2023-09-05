@@ -12,7 +12,7 @@
 	<artifactId>gamescorehub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gamescorehub</name>
-	<description>Uma aplicação para rankear jogos</description>
+	<description>An API to rank games</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -96,10 +96,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
 		</dependency>
 
 	</dependencies>

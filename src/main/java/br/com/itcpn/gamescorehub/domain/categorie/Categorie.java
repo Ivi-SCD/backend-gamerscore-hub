@@ -21,9 +21,9 @@ public class Categorie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_categorie")
+    @Column(name = "id_category")
     private Long id;
-    @Column(unique = true, length = 50, nullable = false)
+    @Column(unique = true, length = 25, nullable = false)
     private String name;
     @ManyToMany(mappedBy = "categoriesList")
     @JsonIgnore
