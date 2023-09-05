@@ -9,7 +9,6 @@ on:
 jobs:
   test-build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -29,7 +28,7 @@ jobs:
         run: |
           until docker exec gsh-db mysqladmin ping -hlocalhost -uroot -proot; do
             echo "Waiting for MySQL to start..."
-            sleep 20
+            sleep 10
           done
 
       - name: Create Databases
@@ -37,8 +36,16 @@ jobs:
           docker exec gsh-db mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS dbgamerscore;"
           docker exec gsh-db mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS dbgamerscoretest;"
 
-      - name: Test with Maven
-        run: mvn test
+      - name: Build & Test with Maven
+        run: mvn -B package --file pom.xml
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: gamerscorehub
+          path: target/*.jar
+
+  docker:
+    needs: test-build
+    uses: ./.github/workflows/Docker.yml
+    secrets: inherit
