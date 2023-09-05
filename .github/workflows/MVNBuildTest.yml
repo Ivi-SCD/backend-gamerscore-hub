@@ -40,7 +40,9 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+        run: mkdir app && cp target/*.jar app
+      
+      - uses: actions/upload-artifact@v3.1.0
         with:
           name: gamerscorehub
           path: target/*.jar
