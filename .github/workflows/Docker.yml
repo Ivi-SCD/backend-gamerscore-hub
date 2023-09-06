@@ -25,10 +25,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME  }}
           password: ${{ secrets.DOCKER_PASSWORD  }}
 
-#      - name: Build and push Docker Images
-#        uses: docker/build-push-action@v4
-#        with:
-#          context: .
-#          file:
-#          tags: iviscd/gamerscorehub:${{github.sha}}
-#          push: true
+      - name: Build and push Docker Images
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerhub
+          tags: iviscd/gamerscorehub:${{github.sha}}
+          push: true

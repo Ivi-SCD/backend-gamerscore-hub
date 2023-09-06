@@ -46,3 +46,8 @@ jobs:
         with:
           name: gamerscorehub
           path: target/*.jar
+
+  docker:
+    needs: test-build
+    uses: ./.github/workflows/Docker.yml
+    secrets: inherit
